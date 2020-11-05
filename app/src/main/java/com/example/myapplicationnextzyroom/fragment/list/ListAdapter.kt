@@ -1,8 +1,11 @@
 package com.example.myapplicationnextzyroom.fragment.list
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.contentValuesOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplicationnextzyroom.R
@@ -25,14 +28,17 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.UserViewHolder>() {
         holder.itemView.firstNameTV.text = currentItem.firstName
         holder.itemView.lastNameTV.text = currentItem.lastName
         holder.itemView.ageTV.text = currentItem.age.toString()
+        holder.itemView.idTV.text = currentItem.id.toString()
         holder.itemView.aListLayout.setOnClickListener {
-
             // without argument
             //  holder.itemView.findNavController().navigate(R.id.action_listFragment_to_updateFragment)
             val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
             holder.itemView.findNavController().navigate(action)
-
         }
+
+        holder.itemView.setOnLongClickListener(View.OnLongClickListener {
+            true
+        })
     }
 
     fun setData(user: List<User>){
