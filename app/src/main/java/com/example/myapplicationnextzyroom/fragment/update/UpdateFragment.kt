@@ -1,14 +1,12 @@
 package com.example.myapplicationnextzyroom.fragment.update
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -40,13 +38,16 @@ class UpdateFragment : Fragment() {
         view.editUserBTN.setOnClickListener {
             updateUser()
         }
+
+        // add menu
+        setHasOptionsMenu(true)
+
         // fix keyboard bug in fragment
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-
         return view
     }
 
-    fun updateUser(){
+    private fun updateUser(){
         val firstName = firstNameEditET.text.toString()
         val lastName = lastNameEditET.text.toString()
         val age = ageEditET.text.toString().toInt()
@@ -57,6 +58,30 @@ class UpdateFragment : Fragment() {
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }
         else Toast.makeText(requireContext(), "fail success",Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.delete_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.deleteIcon){
+            deleteUser()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun deleteUser() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("yes"){_,_ ->
+            userViewModel.deleteUser(args.currentUser)
+        }
+        builder.setNegativeButton("no"){_,_ ->
+
+        }
+        builder.setTitle("Delete ${args.currentUser.firstName} ${args.currentUser.lastName}?")
+        builder.setMessage("Are you sure to delete ${args.currentUser.firstName} ${args.currentUser.lastName} ?")
+        builder.create().show()
     }
 
     private fun inputCheck(firstName: String, lastName: String, age: Editable): Boolean {

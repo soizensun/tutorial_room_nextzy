@@ -36,16 +36,12 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.UserViewHolder>() {
             holder.itemView.findNavController().navigate(action)
         }
 
-        holder.itemView.setOnLongClickListener(View.OnLongClickListener {
-            true
-        })
     }
 
     fun setData(user: List<User>){
         this.userList = user
         notifyDataSetChanged()
     }
-
 
     class UserViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
