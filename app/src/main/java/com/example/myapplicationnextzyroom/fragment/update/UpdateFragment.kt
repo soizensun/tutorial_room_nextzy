@@ -2,9 +2,6 @@ package com.example.myapplicationnextzyroom.fragment.update
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -47,17 +44,16 @@ class UpdateFragment : Fragment() {
         return view
     }
 
-    private fun updateUser(){
+    private fun updateUser() {
         val firstName = firstNameEditET.text.toString()
         val lastName = lastNameEditET.text.toString()
-        val age = ageEditET.text.toString().toInt()
-        if(inputCheck(firstName, lastName, ageEditET.text)){
-            val updateUser = User(args.currentUser.id, firstName, lastName, age)
+        val age = ageEditET.text.toString()
+        if (inputCheck(firstName, lastName, age)) {
+            val updateUser = User(args.currentUser.id, firstName, lastName, Integer.parseInt(age))
             userViewModel.updateUser(updateUser)
-            Toast.makeText(requireContext(), "update success",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "update success", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
-        }
-        else Toast.makeText(requireContext(), "fail success",Toast.LENGTH_SHORT).show()
+        } else Toast.makeText(requireContext(), "fail success", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -65,7 +61,7 @@ class UpdateFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.deleteIcon){
+        if (item.itemId == R.id.deleteIcon) {
             deleteUser()
         }
         return super.onOptionsItemSelected(item)
@@ -73,10 +69,11 @@ class UpdateFragment : Fragment() {
 
     private fun deleteUser() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton("yes"){_,_ ->
+        builder.setPositiveButton("yes") { _, _ ->
             userViewModel.deleteUser(args.currentUser)
+            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }
-        builder.setNegativeButton("no"){_,_ ->
+        builder.setNegativeButton("no") { _, _ ->
 
         }
         builder.setTitle("Delete ${args.currentUser.firstName} ${args.currentUser.lastName}?")
@@ -84,8 +81,7 @@ class UpdateFragment : Fragment() {
         builder.create().show()
     }
 
-    private fun inputCheck(firstName: String, lastName: String, age: Editable): Boolean {
-        Log.i("age", "inputCheck: $age")
-        return !(TextUtils.isEmpty(firstName) && TextUtils.isEmpty(lastName) && age.isEmpty())
+    private fun inputCheck(firstName: String, lastName: String, age: String): Boolean {
+        return !(firstName == "" || lastName == "" || age == "")
     }
 }

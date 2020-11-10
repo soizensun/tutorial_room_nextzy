@@ -1,7 +1,6 @@
 package com.example.myapplicationnextzyroom.fragment.add
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -34,7 +33,7 @@ class AddFragment : Fragment() {
             insertDataToDataBase()
         }
         // fix keyboard bug in fragment
-        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         return view
     }
@@ -59,8 +58,7 @@ class AddFragment : Fragment() {
     }
 
     private fun inputCheck(firstName: String, lastName: String, age: String): Boolean {
-        Log.i("age", "inputCheck: $age")
-        return !(TextUtils.isEmpty(firstName) && TextUtils.isEmpty(lastName) && TextUtils.isEmpty(age))
+        return !(firstName == "" || lastName == "" || age == "")
     }
 
 }
